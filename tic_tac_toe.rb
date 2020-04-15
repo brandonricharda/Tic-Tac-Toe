@@ -14,19 +14,23 @@ class Game
 
     def startGame
         runs = 0
-        until checkWinner
+        until checkWinner || draw
             if runs == 0
                 boardTemplateDisplay
                 runs += 1
             end
             playerOneMove
             boardDisplay
-            next if checkWinner
+            next if checkWinner || draw
             playerTwoMove
             boardDisplay
         end
-        winner = @player_one_moves > @player_two_moves ? @player_one : @player_two
-        puts "#{winner} has won the game!"
+        if checkWinner
+            winner = @player_one_moves > @player_two_moves ? @player_one : @player_two
+            puts "#{winner} has won the game!"
+        else
+            puts "It's a tie!"
+        end
     end
 
     def boardDisplay
@@ -43,6 +47,12 @@ class Game
         puts @board_template[2].join("|")
         puts @board_template[3].join("|")
         puts ""
+    end
+
+    def draw
+        flag = false
+        !checkWinner && @board_display.each { |key, value| flag = value.include?("*") ? false : true }
+        flag
     end
 
     def updateDisplay(input, character)
