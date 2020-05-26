@@ -1,3 +1,5 @@
 # Tic-Tac-Toe
 
-This app is a Ruby tic-tac-toe game played from the command line. To run it, download the .rb file and type $ ruby tic_tac_toe.rb into the command line. Instructions will appear in the console to guide you along.
+This app is my solution to the Tic-Tac-Toe exercise from The Odin Project:
+
+https://www.theodinproject.com/courses/ruby-programming/lessons/oop
