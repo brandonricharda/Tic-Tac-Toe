@@ -43,12 +43,10 @@ describe Game do
     end
 
     describe "#computer_move" do
-
         it "sets the computer's move" do
             test = Game.new
             expect(test.computer_move).to eql("O")
         end
-
     end
 
     describe "#player_move" do
