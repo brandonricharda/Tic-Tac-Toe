@@ -76,4 +76,24 @@ describe Game do
 
     end
 
+    describe "#check_winner" do
+
+        it "identifies when a player has made three moves" do
+            test = Game.new
+            test.player_move(1)
+            test.player_move(2)
+            test.player_move(3)
+            expect(test.check_winner).to eql("X")
+        end
+
+        it "identifies when three moves are not actually a win" do
+            test = Game.new
+            test.player_move(1)
+            test.player_move(3)
+            test.player_move(9)
+            expect(test.check_winner).to eql(false)
+        end
+
+    end
+
 end

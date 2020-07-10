@@ -39,4 +39,18 @@ class Game
         result = !@board.positions[spot] ? true : false
     end
 
+    def check_winner
+        moves = @board.positions.select { |key, value| value == "X" || value == "O" }
+        player_count = moves.values.count("X")
+        computer_count = moves.values.count("O")
+        return false if player_count < 3 && computer_count < 3
+        player_count > computer_count ? @player : @computer
+    end
+
 end
+
+test = Game.new
+test.player_move(1)
+test.player_move(3)
+test.player_move(9)
+p test.check_winner
