@@ -78,7 +78,7 @@ describe Game do
 
     describe "#check_winner" do
 
-        it "identifies when a player has made three moves" do
+        it "identifies when somebody has won horizontally" do
             test = Game.new
             test.player_move(1)
             test.player_move(2)
@@ -86,12 +86,34 @@ describe Game do
             expect(test.check_winner).to eql("X")
         end
 
-        it "identifies when three moves are not actually a win" do
+        it "identifies when somebody has won diagonally" do
+            test = Game.new
+            test.player_move(1)
+            test.player_move(5)
+            test.player_move(9)
+            expect(test.check_winner).to eql("X")
+        end
+
+        it "identifies when somebody has won vertically" do
+            test = Game.new
+            test.player_move(1)
+            test.player_move(4)
+            test.player_move(7)
+            expect(test.check_winner).to eql("X")
+        end
+
+    end
+
+    describe "#full?" do
+
+        it "identifies when the board is full with no winner" do
             test = Game.new
             test.player_move(1)
             test.player_move(3)
-            test.player_move(9)
-            expect(test.check_winner).to eql(false)
+            test.player_move(5)
+            test.player_move(8)
+            5.times { test.computer_move }
+            expect(test.full?).to eql(true)
         end
 
     end

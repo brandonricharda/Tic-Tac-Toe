@@ -8,6 +8,16 @@ class Game
         @player = "X"
         @computer = "O"
         @board = Board.new
+        @winning_moves = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9],
+            [1, 5, 9],
+            [3, 5, 7]
+        ]
     end
 
     def player_move(spot = nil)
@@ -36,21 +46,20 @@ class Game
     end
 
     def empty?(spot)
-        result = !@board.positions[spot] ? true : false
+        !@board.positions[spot] ? true : false
     end
 
     def check_winner
         moves = @board.positions.select { |key, value| value == "X" || value == "O" }
-        player_count = moves.values.count("X")
-        computer_count = moves.values.count("O")
-        return false if player_count < 3 && computer_count < 3
-        player_count > computer_count ? @player : @computer
+        player_pos = moves.select { |key, value| value == "X" }
+        computer_pos = moves.select { |key, value| value == "O" }
+        return false unless @winning_moves.any? { |move| move == player_pos.keys || move == computer_pos.keys }
+        @winning_moves.any? { |move| move == player_pos.keys } ? @player : @computer
+    end
+
+    def full?
+        return false if check_winner
+        @board.positions.none? { |key, value| !value } ? true : false
     end
 
 end
-
-test = Game.new
-test.player_move(1)
-test.player_move(3)
-test.player_move(9)
-p test.check_winner
