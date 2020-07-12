@@ -116,6 +116,11 @@ describe Game do
             expect(test.full?).to eql(true)
         end
 
+        it "confirms when the board is not full" do
+            test = Game.new
+            expect(test.full?).to eql(false)
+        end
+
     end
 
 end

@@ -20,15 +20,34 @@ class Game
         ]
     end
 
+    def start_game
+        
+        until check_winner || full?
+            display_board
+            p "The board works like the first three rows of a telephone numpad. Please choose an empty (nil) spot."
+            player_move
+            computer_move
+        end
+
+        if check_winner
+            p "#{check_winner} has won!"
+        elsif fill?
+            p "It's a draw!"
+        end
+
+    end
+
     def player_move(spot = nil)
 
-        until empty?(spot) && spot.to_i != 0
+        spot = spot.to_i
+
+        until empty?(spot) && (1..9).include?(spot.to_i)
             if !empty?(spot)
                 p "That spot is taken. Please choose another."
-            elsif spot.to_i == 0
-                p "Please choose a number from 1-9."
+            elsif !(1..9).include?(spot.to_i)
+                p "Enter a number from 1-9."
             end
-            spot = gets.chomp
+            spot = gets.chomp.to_i
         end
 
         @board.positions[spot] = @player
@@ -49,6 +68,11 @@ class Game
         !@board.positions[spot] ? true : false
     end
 
+    def full?
+        return false if check_winner
+        @board.positions.none? { |key, value| !value } ? true : false
+    end
+
     def check_winner
         moves = @board.positions.select { |key, value| value == "X" || value == "O" }
         player_pos = moves.select { |key, value| value == "X" }
@@ -57,9 +81,17 @@ class Game
         @winning_moves.any? { |move| move == player_pos.keys } ? @player : @computer
     end
 
-    def full?
-        return false if check_winner
-        @board.positions.none? { |key, value| !value } ? true : false
+    def display_board
+        positions = @board.positions.values
+        top, middle, bottom = Array.new(3) { [] }
+        positions.each_with_index do |square, index|
+            top << square if (0..2).include?(index)
+            middle << square if (3..5).include?(index)
+            bottom << square if (6..8).include?(index)
+        end
+        p top
+        p middle
+        p bottom
     end
 
 end
