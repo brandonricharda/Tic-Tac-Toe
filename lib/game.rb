@@ -83,6 +83,7 @@ class Game
                 arr << moves[key]
             end
             result = arr[0] if Array.new(3, @player) == arr || Array.new(3, @computer) == arr
+            break if result
         end
         result
     end
@@ -102,5 +103,5 @@ class Game
 
 end
 
-new_game = Game.new
-new_game.start_game
+# new_game = Game.new
+# new_game.start_game
