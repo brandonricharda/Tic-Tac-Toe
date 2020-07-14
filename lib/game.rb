@@ -21,30 +21,31 @@ class Game
     end
 
     def start_game
-        
+
         until check_winner || full?
             display_board
             p "The board works like the first three rows of a telephone numpad. Please choose an empty (nil) spot."
+            p "You are X, computer is O."
             player_move
-            computer_move
+            computer_move unless check_winner || full?
         end
 
         if check_winner
             p "#{check_winner} has won!"
-        elsif fill?
+        elsif full?
             p "It's a draw!"
         end
+
+        display_board
 
     end
 
     def player_move(spot = nil)
 
-        spot = spot.to_i
-
-        until empty?(spot) && (1..9).include?(spot.to_i)
+        until (1..9).include?(spot) && empty?(spot)
             if !empty?(spot)
                 p "That spot is taken. Please choose another."
-            elsif !(1..9).include?(spot.to_i)
+            elsif !(1..9).include?(spot)
                 p "Enter a number from 1-9."
             end
             spot = gets.chomp.to_i
@@ -69,16 +70,21 @@ class Game
     end
 
     def full?
-        return false if check_winner
+        return check_winner if check_winner
         @board.positions.none? { |key, value| !value } ? true : false
     end
 
     def check_winner
-        moves = @board.positions.select { |key, value| value == "X" || value == "O" }
-        player_pos = moves.select { |key, value| value == "X" }
-        computer_pos = moves.select { |key, value| value == "O" }
-        return false unless @winning_moves.any? { |move| move == player_pos.keys || move == computer_pos.keys }
-        @winning_moves.any? { |move| move == player_pos.keys } ? @player : @computer
+        result = false
+        moves = @board.positions.select { |key, value| value }
+        @winning_moves.each do |move|
+            arr = []
+            move.each do |key|
+                arr << moves[key]
+            end
+            result = arr[0] if Array.new(3, @player) == arr || Array.new(3, @computer) == arr
+        end
+        result
     end
 
     def display_board
@@ -95,3 +101,6 @@ class Game
     end
 
 end
+
+new_game = Game.new
+new_game.start_game

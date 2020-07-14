@@ -70,6 +70,7 @@ describe Game do
             test = Game.new
             test.computer_move
             computer_spot = test.board.positions.select { |key, value| value }.keys[0]
+            p computer_spot
             test.player_move(computer_spot)
             expect(test.board.positions[computer_spot]).to eql("O")
         end
@@ -99,6 +100,15 @@ describe Game do
             test.player_move(1)
             test.player_move(4)
             test.player_move(7)
+            expect(test.check_winner).to eql("X")
+        end
+
+        it "identifies when somebody has won even if they have more than three moves" do
+            test = Game.new
+            test.player_move(1)
+            test.player_move(3)
+            test.player_move(5)
+            test.player_move(9)
             expect(test.check_winner).to eql("X")
         end
 
